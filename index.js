@@ -28,9 +28,9 @@ app.use(HelloRouter);
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    socket.on('triggerAlert', (data) => {
+    socket.on('triggerAlert', () => {
         // Emit custom data with the alert
-        io.emit('showAlert', { message: data.message, sender: data.sender });
+        io.emit('showAlert');
     });
 
     socket.on('disconnect', () => {
