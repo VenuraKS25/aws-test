@@ -4,32 +4,43 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 
 import corsMiddleware from './middleware/cors.middleware.js';
-
-import { default as HelloRouter } from './routes/hello-world.route.js';
+import HelloRouter from './routes/hello-world.route.js';
 
 dotenv.config();
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
-app.use(corsMiddleware);
 
+// Configure CORS for both Express and Socket.IO
+const io = new Server(server, {
+    cors: {
+        origin: "*", // Adjust as needed for your security requirements
+        methods: ["GET", "POST"]
+    }
+});
+
+// Use middleware
+app.use(corsMiddleware);
+app.use(express.json()); // Add this if you plan to handle JSON payloads
 app.use(HelloRouter);
 
+// Socket.IO connection handling
 io.on('connection', (socket) => {
-    console.log('a user connected');
+    console.log('A user connected');
 
-    socket.on('triggerAlert', () => {
-        io.emit('showAlert');
+    socket.on('triggerAlert', (data) => {
+        // Emit custom data with the alert
+        io.emit('showAlert', { message: data.message, sender: data.sender });
     });
 
-    // Handle client disconnect
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     });
 });
 
-const PORT = process.env.PORT;
+// Set the port from the environment variable or use a default
+const PORT = process.env.PORT || 3000;
+
 server.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`)
-})
+    console.log(`Server started on port ${PORT}`);
+});
