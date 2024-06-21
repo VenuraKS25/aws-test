@@ -30,6 +30,7 @@ io.on('connection', (socket) => {
 
     socket.on('triggerAlert', () => {
         // Emit custom data with the alert
+        console.log('triggerAlert received');
         io.emit('showAlert');
     });
 
