@@ -12,12 +12,7 @@ const app = express();
 const server = createServer(app);
 
 // Configure CORS for both Express and Socket.IO
-const io = new Server(server, {
-    cors: {
-        origin: "*", // Adjust as needed for your security requirements
-        methods: ["GET", "POST"]
-    }
-});
+const io = new Server(server);
 
 // Use middleware
 app.use(corsMiddleware);
