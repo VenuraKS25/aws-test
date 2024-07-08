@@ -31,11 +31,11 @@ io.on('connection', (socket) => {
         io.emit('showOrderAccepted', data);
     });
 
-    socket.on('orderPrepared', (data) => {
+    socket.on('onOrderPrepared', (data) => {
         io.emit('showOrderPrepared', data);
     });
 
-    socket.on('orderDelivered', (data) => {
+    socket.on('onOrderDelivered', (data) => {
         io.emit('showOrderDelivered', data);
     });
 
