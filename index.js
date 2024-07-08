@@ -23,10 +23,20 @@ app.use(HelloRouter);
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    socket.on('triggerAlert', () => {
-        // Emit custom data with the alert
-        console.log('triggerAlert received');
-        io.emit('showAlert');
+    socket.on('onHelpRequest', (data) => {
+        io.emit('showHelpRequest', data);
+    });
+
+    socket.on('onOrderAccepted', (data) => {
+        io.emit('showOrderAccepted', data);
+    });
+
+    socket.on('orderPrepared', (data) => {
+        io.emit('showOrderPrepared', data);
+    });
+
+    socket.on('orderDelivered', (data) => {
+        io.emit('showOrderDelivered', data);
     });
 
     socket.on('disconnect', () => {
